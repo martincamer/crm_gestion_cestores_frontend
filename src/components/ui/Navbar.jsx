@@ -22,7 +22,7 @@ export const Navbar = () => {
           </button>
           <ul
             tabIndex={0}
-            className="dropdown-content menu bg-base-100 rounded-md z-[1] w-56 p-1 gap-1"
+            className="dropdown-content menu bg-base-100 rounded-md z-[1] w-56 p-1 gap-1 shadow-md"
           >
             <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
               <Link to={"/contratos-a-garantizar"}>
@@ -33,8 +33,11 @@ export const Navbar = () => {
               <Link to={"/contratos-sin-plateas"}>Contratos sin plateas</Link>
             </li>
             <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
-              <Link to={"/contratos-vencidos"}>Vencidos</Link>
+              <Link to={"/contratos-con-plateas"}>Contratos con plateas</Link>
             </li>
+            {/* <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+              <Link to={"/contratos-vencidos"}>Vencidos</Link>
+            </li> */}
             <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
               <Link to={"/contratos-vencidos"}>Garantias en informes</Link>
             </li>

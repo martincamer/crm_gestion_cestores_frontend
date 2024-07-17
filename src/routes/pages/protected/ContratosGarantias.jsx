@@ -139,8 +139,10 @@ export const ContratosGarantias = () => {
                               "bg-orange-500") ||
                             (contrato.estado === "por garantizar" &&
                               "bg-blue-600") ||
-                            (contrato.estado === "en proceso" &&
-                              "bg-yellow-500") ||
+                            (contrato.estado === "en sección con platea" &&
+                              "bg-fuchsia-500") ||
+                            (contrato.estado === "en sección sin platea" &&
+                              "bg-pink-500") ||
                             (contrato.estado === "en informes" &&
                               "bg-green-500")
                           } py-1 px-2 rounded text-white font-semibold`}
