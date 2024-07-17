@@ -4,12 +4,12 @@ import { FaChevronDown, FaList, FaSearch } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useContratosContext } from "../../../context/ContratosContext";
 import { formatearFecha } from "../../../helpers/formatearFecha";
+import { useObtenerId } from "../../../helpers/useObtenerId";
 import { toast } from "react-toastify";
 import io from "socket.io-client";
 import client from "../../../api/axios";
-import { useObtenerId } from "../../../helpers/useObtenerId";
 
-export const ContratosSinPlateas = () => {
+export const ContratosEnInformes = () => {
   const { contratos, sucursales } = useContratosContext();
 
   const { idObtenida, handleObtenerId } = useObtenerId();
@@ -91,7 +91,7 @@ export const ContratosSinPlateas = () => {
   return (
     <section className="h-full max-h-full w-full max-w-full min-w-full">
       <div className="bg-gray-100 py-10 px-10 flex justify-between items-center">
-        <p className="font-bold text-xl">Contratos sin plateas</p>
+        <p className="font-bold text-xl">Informes, contratos finalizados</p>
       </div>
       <div className="bg-white w-full min-h-screen max-w-full h-full px-10 py-10">
         <div className="flex justify-between items-center">
@@ -191,25 +191,26 @@ export const ContratosSinPlateas = () => {
                 <th>Fecha de cancelación anticipo</th>
                 <th>Fecha de garantización</th>
                 <th>Fecha de vencimiento</th>
-                <th>Días a vencer</th>
+                <th>Destinado a</th>
                 <th>Estado del plazo</th>
                 <th>Tipo plan</th>
                 <th>Observaciónes</th>
                 <th>Estado</th>
-                <th></th>
+                {/* <th></th> */}
               </tr>
             </thead>
-            {/* {"fecha_cancelación_anticipo":"2024-07-15","fecha_de_garantizacion":"2024-07-26","fecha_de_vencimiento":"2024-08-02","observaciones_con_plateas":"asdasdasd"} */}
+            {/* {"fecha_cancelación_anticipo":"2024-07-17","fecha_de_garantización":"2024-07-17","fecha_de_vencimiento":"2024-07-31","destinado":"","observaciones":""} */}
             <tbody className="text-xs font-medium capitalize">
               {filteredData.map((contrato) => {
                 contratos.sort((a, b) => b.id - a.id);
                 return (
-                  contrato.estado === "en sección sin platea" && (
+                  contrato.estado === "enviado a informes, completo" && (
                     <tr key={contrato.id}>
                       <th>{contrato.id}</th>
                       <td>{contrato.nombre_apellido}</td>
                       <td>{contrato.numero_contrato}</td>
                       <td>{contrato.sucursal}</td>
+
                       <td>
                         {contrato?.datos
                           ? JSON.parse(contrato.datos)
@@ -218,19 +219,18 @@ export const ContratosSinPlateas = () => {
                       </td>
                       <td>
                         {contrato?.datos
-                          ? JSON.parse(contrato.datos).fecha_de_garantizacion
+                          ? JSON.parse(contrato.datos).fecha_de_garantización
                           : "-"}
                       </td>
                       <td>
                         {contrato?.datos
                           ? JSON.parse(contrato.datos).fecha_de_vencimiento
                           : "-"}
-                      </td>{" "}
+                      </td>
                       <td>
                         {contrato?.datos
-                          ? JSON.parse(contrato.datos).plazo_dias
-                          : "-"}{" "}
-                        días
+                          ? JSON.parse(contrato.datos).destinado
+                          : "-"}
                       </td>
                       <td>
                         {contrato.datos ? (
@@ -263,14 +263,15 @@ export const ContratosSinPlateas = () => {
                           ? JSON.parse(contrato.datos).observaciones_con_plateas
                           : "-"}
                       </td>
+
                       <td>
                         <div className="flex">
-                          <p className="bg-blue-600 py-1 px-2 rounded text-white font-semibold">
-                            {contrato.estado}
+                          <p className="bg-green-500 py-1 px-2 rounded text-white font-semibold">
+                            {"en informes"}
                           </p>
                         </div>
                       </td>
-                      <td>
+                      {/* <td>
                         <div className="dropdown dropdown-end">
                           <button
                             tabIndex={0}
@@ -301,7 +302,7 @@ export const ContratosSinPlateas = () => {
                             </li>
                           </ul>
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   )
                 );
@@ -382,7 +383,7 @@ const ConvertirEnInformes = ({ idObtenida }) => {
       reset();
 
       setTimeout(() => {
-        navigate("/contratos-en-informes");
+        navigate("/contratos-en-informess");
       }, 1000);
     } catch (error) {
       console.error("Error creating product:", error);

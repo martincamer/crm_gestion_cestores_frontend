@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
+import { FaUser } from "react-icons/fa";
 
 export const Navbar = () => {
+  const { user } = useAuth();
   return (
-    <nav className="bg-gray-700 py-5 px-5">
+    <nav className="bg-gray-700 py-5 px-5 flex items-center justify-between">
       <div className="flex gap-3 items-center">
         <Link
           to={"/"}
@@ -39,7 +42,9 @@ export const Navbar = () => {
               <Link to={"/contratos-vencidos"}>Vencidos</Link>
             </li> */}
             <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
-              <Link to={"/contratos-vencidos"}>Garantias en informes</Link>
+              <Link to={"/contratos-en-informes"}>
+                Garantias en informes,final
+              </Link>
             </li>
           </ul>
         </div>
@@ -50,6 +55,38 @@ export const Navbar = () => {
           >
             Cargar Contratos/Clientes
           </Link>
+        </div>
+      </div>
+      <div className="flex gap-2 items-center">
+        <div className="dropdown dropdown-bottom dropdown-end">
+          {/* <div tabIndex={0} role="button" className="btn m-1">
+            Click
+          </div> */}
+          <div
+            tabIndex={0}
+            role="button"
+            className="bg-sky-400 py-5 px-5 rounded-full cursor-pointer"
+          ></div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-white shadow-xl rounded-md z-[1] w-52 p-2 mt-1"
+          >
+            <li className="text-sm font-semibold hover:bg-gray-50 rounded-md text-gray-500">
+              <Link to={"/perfil"}>
+                <FaUser />
+                Perfil
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="fle flex-col">
+          {" "}
+          <p className="text-white text-xs font-semibold rounded-md">
+            {user.username}
+          </p>
+          <p className="text-white text-xs font-semibold rounded-md">
+            {user.email}
+          </p>
         </div>
       </div>
     </nav>

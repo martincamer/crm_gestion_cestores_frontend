@@ -10,7 +10,7 @@ import client from "../../../api/axios";
 import { useObtenerId } from "../../../helpers/useObtenerId";
 
 export const ContratosConPlateas = () => {
-  const { contratos } = useContratosContext();
+  const { contratos, sucursales } = useContratosContext();
 
   const { idObtenida, handleObtenerId } = useObtenerId();
 
@@ -40,6 +40,54 @@ export const ContratosConPlateas = () => {
     }
   };
 
+  const [searchTermCliente, setSearchTermCliente] = useState("");
+  const [selectedSucursal, setSelectedSucursal] = useState(""); // Estado para almacenar la sucursal seleccionada
+  const [selectedTipoPlan, setSelectedTipoPlan] = useState(""); // Estado para almacenar el
+  const [selectedEstado, setSelectedEstado] = useState(""); // Estado para almacenar el
+
+  const handleSearchClienteChange = (e) => {
+    setSearchTermCliente(e.target.value);
+  };
+
+  const handleSucursalChange = (e) => {
+    setSelectedSucursal(e.target.value);
+  };
+
+  const handleTipoPlanChange = (e) => {
+    setSelectedTipoPlan(e.target.value);
+  };
+
+  const handleEstadoChange = (e) => {
+    setSelectedEstado(e.target.value);
+  };
+
+  // Filtrar por término de búsqueda, sucursal seleccionada y tipo de plan seleccionado
+  let filteredData = contratos.filter((contrato) => {
+    const matchesSearchTerm =
+      contrato.nombre_apellido
+        .toLowerCase()
+        .includes(searchTermCliente.toLowerCase()) ||
+      contrato.numero_contrato
+        .toLowerCase()
+        .includes(searchTermCliente.toLowerCase());
+
+    const matchesSucursal =
+      selectedSucursal === "" || contrato.sucursal === selectedSucursal;
+
+    const matchesTipoPlan =
+      selectedTipoPlan === "" || contrato.tipo_plan === selectedTipoPlan;
+
+    const matchesTipoEstado =
+      selectedEstado === "" || contrato.estado === selectedEstado;
+
+    return (
+      matchesSearchTerm &&
+      matchesSucursal &&
+      matchesTipoPlan &&
+      matchesTipoEstado
+    );
+  });
+
   return (
     <section className="h-full max-h-full w-full max-w-full min-w-full">
       <div className="bg-gray-100 py-10 px-10 flex justify-between items-center">
@@ -47,19 +95,74 @@ export const ContratosConPlateas = () => {
       </div>
       <div className="bg-white w-full min-h-screen max-w-full h-full px-10 py-10">
         <div className="flex justify-between items-center">
-          <select className="border border-gray-300 rounded-md py-2 px-2 w-1/12 text-sm font-semibold focus:border-blue-600 cursor-pointer outline-none">
-            <option className="font-bold text-xs text-blue-600">Todos</option>
-            <option className="text-xs font-semibold">Garantizados</option>
-            <option className="text-xs font-semibold">Vencidos</option>
-            <option className="text-xs font-semibold">En platea</option>
-            <option className="text-xs font-semibold">Contados</option>
-            <option className="text-xs font-semibold">Cuotas</option>
-          </select>
+          <div className="flex gap-2">
+            <select
+              value={selectedTipoPlan}
+              onChange={handleTipoPlanChange}
+              className="border border-gray-300 rounded-md py-2 px-2 w-auto text-sm font-semibold focus:border-blue-600 cursor-pointer outline-none"
+            >
+              <option value="" className="font-bold text-blue-600">
+                Todos los tipos
+              </option>
+              <option className="font-semibold">Contado</option>
+              <option value={"anticipo + cuotas"} className="font-semibold">
+                Anticipo + Cuotas
+              </option>
+              <option value={"contado diferido"} className="font-semibold">
+                Contado diferido
+              </option>
+              <option value={"todo financiado"} className="font-semibold">
+                Todo financiado
+              </option>
+            </select>
+            {/* <select
+              value={selectedEstado}
+              onChange={handleEstadoChange}
+              className="border border-gray-300 rounded-md py-2 px-2 w-auto text-sm font-semibold focus:border-blue-600 cursor-pointer outline-none"
+            >
+              <option value="" className="font-bold text-blue-600">
+                Todos los estados
+              </option>
+              <option value={"en sección sin platea"} className="font-semibold">
+                Sin plateas
+              </option>
+              <option
+                value={"enviado a informes, completo"}
+                className="font-semibold"
+              >
+                En informes, finalizados
+              </option>
+              <option value={"en sección con platea"} className="font-semibold">
+                Con plateas
+              </option>
+              <option value={"por garantizar"} className="font-semibold">
+                Por garantizar
+              </option>
+            </select> */}
+          </div>
 
           <div className="flex gap-5 items-center">
             <div className="border border-gray-300 px-2 py-1 rounded-md text-sm font-medium flex items-center hover:border-blue-600">
               <FaSearch className="text-gray-400" />
-              <input className="text-sm outline-none w-full px-2" />
+              <input
+                value={searchTermCliente}
+                onChange={handleSearchClienteChange}
+                className="text-sm outline-none w-full px-2"
+              />
+            </div>
+            <div>
+              <select
+                className="border border-gray-300 px-2 py-1.5 rounded-md text-sm font-medium flex items-center hover:border-blue-600 outline-none"
+                value={selectedSucursal}
+                onChange={handleSucursalChange}
+              >
+                <option value="">Todas las sucursales</option>
+                {sucursales.map((suc) => (
+                  <option key={suc.nombre} value={suc.nombre}>
+                    {suc.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="dropdown dropdown-end">
               <button
@@ -121,7 +224,7 @@ export const ContratosConPlateas = () => {
             </thead>
             {/* {"fecha_de_firma":"2024-07-16","fecha_de_cancelacion__primero":"2024-07-09","fecha_vencimiento_platea":"2024-07-31","observaciones_con_plateas":"asdasdasdasd"} */}
             <tbody className="text-xs font-medium capitalize">
-              {contratos.map((contrato) => {
+              {filteredData.map((contrato) => {
                 contratos.sort((a, b) => b.id - a.id);
                 return (
                   contrato.estado === "en sección con platea" && (
@@ -233,22 +336,6 @@ const ConvertirGarantiaPlatea = ({ idObtenida }) => {
 
   const { setContratos } = useContratosContext();
 
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_URL, {
-      withCredentials: true,
-    });
-
-    setSocket(newSocket);
-
-    newSocket.on("guardar-contrato-garantias-con-platea", (guardarContrato) => {
-      setContratos(guardarContrato);
-    });
-
-    return () => newSocket.close();
-  }, []);
-
   const onSubmit = async (formData) => {
     try {
       const ordenData = {
@@ -262,12 +349,7 @@ const ConvertirGarantiaPlatea = ({ idObtenida }) => {
         ordenData
       );
 
-      if (socket) {
-        socket.emit(
-          "guardar-contrato-garantias-con-platea",
-          res.data.todosLosContratos
-        );
-      }
+      setContratos(res.data.todosLosContratos);
 
       console.log(res.data);
 

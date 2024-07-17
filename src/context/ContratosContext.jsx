@@ -17,6 +17,7 @@ export const useContratosContext = () => {
 // ProveedoresProvider component
 export const ContratosProvider = ({ children }) => {
   const [contratos, setContratos] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -31,8 +32,23 @@ export const ContratosProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const respuesta = await client.get("/sucursal");
+        setSucursales(respuesta.data);
+      } catch (error) {
+        console.error("Error fetching proveedores data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
-    <ContratosContext.Provider value={{ contratos, setContratos }}>
+    <ContratosContext.Provider
+      value={{ contratos, setContratos, sucursales, setSucursales }}
+    >
       {children}
     </ContratosContext.Provider>
   );

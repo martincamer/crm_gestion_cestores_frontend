@@ -14,6 +14,8 @@ import { ContratosPorGarantizar } from "./routes/pages/protected/ContratosPorGar
 import { ToastContainer } from "react-toastify";
 import { ContratosConPlateas } from "./routes/pages/protected/ContratosConPlateas";
 import { ContratosSinPlateas } from "./routes/pages/protected/ContratosSinPlateas";
+import { ContratosEnInformes } from "./routes/pages/protected/ContratosEnInformes";
+import { Perfil } from "./routes/pages/protected/Perfil";
 
 function App() {
   const { isAuth } = useAuth();
@@ -78,7 +80,13 @@ function App() {
                 index
                 path="/contratos-sin-plateas"
                 element={<ContratosSinPlateas />}
+              />{" "}
+              <Route
+                index
+                path="/contratos-en-informes"
+                element={<ContratosEnInformes />}
               />
+              <Route index path="/perfil" element={<Perfil />} />
             </Route>
           </Route>
           {/* <Route path="*" element={<NotFound />} /> */}
