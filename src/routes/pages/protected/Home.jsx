@@ -27,7 +27,7 @@ export const Home = () => {
 
   return (
     <section className="w-full h-full min-h-screen max-h-full max-w-full">
-      {user?.sector === "Garantias" && (
+      {user?.sector === "garantias" && (
         <div>
           <div className="py-32 px-10 bg-gray-700">
             <div className="w-1/2 mx-auto">
