@@ -24,7 +24,7 @@ export const Login = () => {
 
   return (
     <section className="h-full justify-center flex items-center">
-      <div className="w-3/4 min-h-full h-full max-h-full bg-gradient-to-b from-black to-gray-800">
+      <div className="w-1/2 min-h-full h-full max-h-full bg-gradient-to-b from-black to-gray-800">
         <div className="flex mt-5 mx-5">
           <p className="text-blue-700 font-bold text-xl py-2 px-5 rounded-xl bg-white">
             Tecnohouse viviendas

@@ -2,9 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 import { FaUser } from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
 
 export const Navbar = () => {
-  const { user } = useAuth();
+  const { user, signout } = useAuth();
   return (
     <nav className="bg-gray-700 py-5 px-5 flex items-center justify-between">
       <div className="flex gap-3 items-center">
@@ -61,6 +62,61 @@ export const Navbar = () => {
             </div>
           </>
         )}
+
+        {user.sector === "proveedores" && (
+          <>
+            <div className="dropdown dropdown-hover">
+              <button
+                tabIndex={0}
+                role="button"
+                className="text-white font-semibold hover:bg-gray-600 py-2 px-2 text-sm rounded-md transition-all"
+              >
+                Sector proveedores
+              </button>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-md z-[1] w-56 p-1 gap-1 shadow-md"
+              >
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/proveedores"}>Proveedores</Link>
+                </li>
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/comprobantes"}>Comprobantes</Link>
+                </li>{" "}
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/ordenes"}>Ordenes de compra</Link>
+                </li>
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/productos"}>Productos</Link>
+                </li>
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/presupuestos"}>Presupuestos</Link>
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
+        {user.sector === "caja" && (
+          <>
+            <div className="dropdown dropdown-hover">
+              <button
+                tabIndex={0}
+                role="button"
+                className="text-white font-semibold hover:bg-gray-600 py-2 px-2 text-sm rounded-md transition-all"
+              >
+                Sector control de cajas
+              </button>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-md z-[1] w-56 p-1 gap-1 shadow-md"
+              >
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/cajas"}>Subir nuevas cajas</Link>
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
       </div>
       <div className="flex gap-2 items-center">
         <div className="dropdown dropdown-bottom dropdown-end">
@@ -77,6 +133,12 @@ export const Navbar = () => {
               <Link to={"/perfil"}>
                 <FaUser />
                 Perfil
+              </Link>
+            </li>
+            <li className="text-sm font-semibold hover:bg-gray-50 rounded-md text-gray-500">
+              <Link onClick={() => signout()} to={"/perfil"}>
+                <IoLogOut className="text-xl" />
+                Cerrar la cuenta
               </Link>
             </li>
           </ul>

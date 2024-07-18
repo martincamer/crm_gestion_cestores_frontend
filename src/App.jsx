@@ -1,24 +1,29 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useAuth } from "./context/AuthProvider";
 import { Login } from "./routes/pages/Login";
 import { Register } from "./routes/pages/Register";
 import { Home } from "./routes/pages/protected/Home";
 import { ContratosProvider } from "./context/ContratosContext";
-import { useEffect, useState } from "react";
 import { Navbar } from "./components/ui/Navbar";
 import { ContratosGarantias } from "./routes/pages/protected/ContratosGarantias";
-import RutaProtegida from "./layouts/RutaProtejida";
-import "react-toastify/dist/ReactToastify.css";
-import "react-toastify/dist/ReactToastify.min.css";
 import { ContratosPorGarantizar } from "./routes/pages/protected/ContratosPorGarantizar";
 import { ToastContainer } from "react-toastify";
 import { ContratosConPlateas } from "./routes/pages/protected/ContratosConPlateas";
 import { ContratosSinPlateas } from "./routes/pages/protected/ContratosSinPlateas";
 import { ContratosEnInformes } from "./routes/pages/protected/ContratosEnInformes";
 import { Perfil } from "./routes/pages/protected/Perfil";
+import { ProveedoresProvider } from "./context/ProveedoresContext";
+import { Proveedores } from "./routes/pages/protected/Proveedores";
+import { Comprobantes } from "./routes/pages/protected/Comprobantes";
+import RutaProtegida from "./layouts/RutaProtejida";
+import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.min.css";
+import { OrdenesCompra } from "./routes/pages/protected/OrdenesCompra";
+import { Cajas } from "./routes/pages/protected/Cajas";
 
 function App() {
-  const { isAuth } = useAuth();
+  const { isAuth, user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(true); // Estado de carga
 
@@ -53,39 +58,52 @@ function App() {
             <Route
               element={
                 <ContratosProvider>
-                  <Navbar />
-                  <main className="min-h-full max-h-full h-full flex">
-                    <Outlet />
-                  </main>
+                  <ProveedoresProvider>
+                    <Navbar />
+                    <main className="min-h-full max-h-full h-full flex">
+                      <Outlet />
+                    </main>
+                  </ProveedoresProvider>
                 </ContratosProvider>
               }
             >
               <Route index path="/" element={<Home />} />
-              <Route
-                index
-                path="/contratos-garantias"
-                element={<ContratosGarantias />}
-              />
-              <Route
-                index
-                path="/contratos-a-garantizar"
-                element={<ContratosPorGarantizar />}
-              />{" "}
-              <Route
-                index
-                path="/contratos-con-plateas"
-                element={<ContratosConPlateas />}
-              />
-              <Route
-                index
-                path="/contratos-sin-plateas"
-                element={<ContratosSinPlateas />}
-              />{" "}
-              <Route
-                index
-                path="/contratos-en-informes"
-                element={<ContratosEnInformes />}
-              />
+              {user?.sector === "garantias" && (
+                <>
+                  <Route
+                    path="/contratos-garantias"
+                    element={<ContratosGarantias />}
+                  />
+                  <Route
+                    path="/contratos-a-garantizar"
+                    element={<ContratosPorGarantizar />}
+                  />{" "}
+                  <Route
+                    path="/contratos-con-plateas"
+                    element={<ContratosConPlateas />}
+                  />
+                  <Route
+                    path="/contratos-sin-plateas"
+                    element={<ContratosSinPlateas />}
+                  />{" "}
+                  <Route
+                    path="/contratos-en-informes"
+                    element={<ContratosEnInformes />}
+                  />
+                </>
+              )}
+              {user?.sector === "proveedores" && (
+                <>
+                  <Route path="/proveedores" element={<Proveedores />} />
+                  <Route path="/comprobantes" element={<Comprobantes />} />
+                  <Route path="/ordenes" element={<OrdenesCompra />} />
+                </>
+              )}
+              {user?.sector === "caja" && (
+                <>
+                  <Route path="/cajas" element={<Cajas />} />
+                </>
+              )}
               <Route index path="/perfil" element={<Perfil />} />
             </Route>
           </Route>

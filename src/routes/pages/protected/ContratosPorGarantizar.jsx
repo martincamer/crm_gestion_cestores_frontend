@@ -84,6 +84,7 @@ export const ContratosPorGarantizar = () => {
       matchesTipoEstado
     );
   });
+
   return (
     <section className="h-full max-h-full w-full max-w-full min-w-full">
       <div className="bg-gray-100 py-10 px-10 flex justify-between items-center">

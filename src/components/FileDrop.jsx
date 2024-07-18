@@ -10,7 +10,7 @@ const FileDrop = ({
   handleRemoveFile,
 }) => {
   return (
-    <div className="bg-blue-50 py-5 px-5 mt-3 border w-full">
+    <div className="py-5 px-5 mt-3 border w-full rounded-md">
       <div className="p-6 bg-white">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
@@ -23,7 +23,7 @@ const FileDrop = ({
             />
             <label
               htmlFor="file-upload"
-              className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer text-sm"
+              className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer text-sm"
             >
               Cargar imagen o archivo
             </label>
