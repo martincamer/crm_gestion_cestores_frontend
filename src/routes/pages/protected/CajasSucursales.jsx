@@ -10,7 +10,7 @@ import { formatearDinero } from "../../../helpers/formatearDinero";
 import client from "../../../api/axios";
 import XLSX from "xlsx";
 
-export const Cajas = () => {
+export const CajasSucursales = () => {
   const [searchTermCliente, setSearchTermCliente] = useState("");
 
   const { proveedores } = useProveedoresContext();

@@ -96,6 +96,7 @@ export const Navbar = () => {
             </div>
           </>
         )}
+
         {user.sector === "caja" && (
           <>
             <div className="dropdown dropdown-hover">
@@ -110,6 +111,9 @@ export const Navbar = () => {
                 tabIndex={0}
                 className="dropdown-content menu bg-base-100 rounded-md z-[1] w-56 p-1 gap-1 shadow-md"
               >
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/sucursales-cajas"}>Sucursales cajas</Link>
+                </li>{" "}
                 <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
                   <Link to={"/cajas"}>Subir nuevas cajas</Link>
                 </li>
