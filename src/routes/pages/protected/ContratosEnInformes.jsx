@@ -467,3 +467,89 @@ const ConvertirEnInformes = ({ idObtenida }) => {
     </dialog>
   );
 };
+
+const ModalEliminar = ({ idObtenida }) => {
+  const { register, handleSubmit } = useForm();
+
+  const { setSalidas } = useSalidasContext();
+
+  const onSubmit = async (formData) => {
+    try {
+      const ordenData = {
+        datos: {
+          ...formData,
+        },
+      };
+
+      const res = await client.delete(`/salidas/${idObtenida}`, ordenData);
+
+      setSalidas(res.data.todosLosContratos);
+
+      toast.error("¡Contrato eliminado correctamente!", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        style: {
+          padding: "12px",
+        },
+      });
+
+      document.getElementById("my_modal_eliminar").close();
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+
+  return (
+    <dialog id="my_modal_eliminar" className="modal">
+      <div className="modal-box rounded-md max-w-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <img
+              className="w-44 mx-auto"
+              src="https://app.holded.com/assets/img/document/doc_delete.png"
+            />
+          </div>
+          <div className="font-semibold text-sm text-gray-400 text-center">
+            REFERENCIA {idObtenida}
+          </div>
+          <div className="font-semibold text-[#FD454D] text-lg text-center">
+            Eliminar la salida cargada..
+          </div>
+          <div className="text-sm text-gray-400 text-center mt-1">
+            La salida no podra ser recuperada al eliminarla, los datos
+            desapareceran....
+          </div>
+          <div className="mt-4 text-center w-full px-16">
+            <button
+              type="submit"
+              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+            >
+              Confirmar
+            </button>{" "}
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("my_modal_eliminar").close()
+              }
+              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  );
+};

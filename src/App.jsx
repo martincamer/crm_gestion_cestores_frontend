@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { OrdenesCompra } from "./routes/pages/protected/OrdenesCompra";
 import { Cajas } from "./routes/pages/protected/Cajas";
 import { CajasSucursales } from "./routes/pages/protected/CajasSucursales";
+import { Cargas } from "./routes/pages/protected/Cargas";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -107,6 +108,12 @@ function App() {
                     path="/sucursales-cajas"
                     element={<CajasSucursales />}
                   />
+                </>
+              )}{" "}
+              {user?.sector === "carga" && (
+                <>
+                  <Route path="/cajas" element={<Cajas />} />
+                  <Route path="/sector-cargas" element={<Cargas />} />
                 </>
               )}
               <Route index path="/perfil" element={<Perfil />} />
