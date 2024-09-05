@@ -16,13 +16,16 @@ import { Perfil } from "./routes/pages/protected/Perfil";
 import { ProveedoresProvider } from "./context/ProveedoresContext";
 import { Proveedores } from "./routes/pages/protected/Proveedores";
 import { Comprobantes } from "./routes/pages/protected/Comprobantes";
-import RutaProtegida from "./layouts/RutaProtejida";
-import "react-toastify/dist/ReactToastify.css";
-import "react-toastify/dist/ReactToastify.min.css";
 import { OrdenesCompra } from "./routes/pages/protected/OrdenesCompra";
 import { Cajas } from "./routes/pages/protected/Cajas";
 import { CajasSucursales } from "./routes/pages/protected/CajasSucursales";
 import { Cargas } from "./routes/pages/protected/Cargas";
+import RutaProtegida from "./layouts/RutaProtejida";
+import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.min.css";
+import { CargasProvider } from "./context/CargasContext";
+import { GaritaControl } from "./routes/pages/protected/GaritaControl";
+import { GaritaContext, GaritaProvider } from "./context/GaritaContext";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -61,10 +64,14 @@ function App() {
               element={
                 <ContratosProvider>
                   <ProveedoresProvider>
-                    <Navbar />
-                    <main className="min-h-full max-h-full h-full flex">
-                      <Outlet />
-                    </main>
+                    <CargasProvider>
+                      <GaritaProvider>
+                        <Navbar />
+                        <main className="min-h-full max-h-full h-full flex">
+                          <Outlet />
+                        </main>
+                      </GaritaProvider>
+                    </CargasProvider>
                   </ProveedoresProvider>
                 </ContratosProvider>
               }
@@ -112,8 +119,12 @@ function App() {
               )}{" "}
               {user?.sector === "carga" && (
                 <>
-                  <Route path="/cajas" element={<Cajas />} />
                   <Route path="/sector-cargas" element={<Cargas />} />
+                </>
+              )}{" "}
+              {user?.sector === "control-garita" && (
+                <>
+                  <Route path="/sector-garita" element={<GaritaControl />} />
                 </>
               )}
               <Route index path="/perfil" element={<Perfil />} />
