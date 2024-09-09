@@ -26,6 +26,9 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { CargasProvider } from "./context/CargasContext";
 import { GaritaControl } from "./routes/pages/protected/GaritaControl";
 import { GaritaContext, GaritaProvider } from "./context/GaritaContext";
+import { Informes } from "./routes/pages/protected/Informes";
+import { InformesProvider } from "./context/InformesContext";
+import { InformesFabrica } from "./routes/pages/protected/InformesFabrica";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -66,10 +69,12 @@ function App() {
                   <ProveedoresProvider>
                     <CargasProvider>
                       <GaritaProvider>
-                        <Navbar />
-                        <main className="min-h-full max-h-full h-full flex">
-                          <Outlet />
-                        </main>
+                        <InformesProvider>
+                          <Navbar />
+                          <main className="min-h-full max-h-full h-full flex">
+                            <Outlet />
+                          </main>
+                        </InformesProvider>
                       </GaritaProvider>
                     </CargasProvider>
                   </ProveedoresProvider>
@@ -126,6 +131,15 @@ function App() {
                 <>
                   <Route path="/sector-garita" element={<GaritaControl />} />
                 </>
+              )}{" "}
+              {user?.sector === "informes" && (
+                <>
+                  <Route path="/informes" element={<Informes />} />{" "}
+                  <Route
+                    path="/informes-fabrica/:id"
+                    element={<InformesFabrica />}
+                  />
+                </>
               )}
               <Route index path="/perfil" element={<Perfil />} />
             </Route>
@@ -141,9 +155,9 @@ export default App;
 
 const LoadingScreen = () => {
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-gray-50">
+    <div className="w-full h-screen flex items-center justify-center bg-gray-100">
       <div className="flex flex-col items-center">
-        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-t-orange-500 border-b-transparent"></div>
+        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-t-[#FD454D] border-b-transparent"></div>
         <p className="mt-4 text-lg font-bold text-gray-700">Cargando...</p>
       </div>
     </div>
