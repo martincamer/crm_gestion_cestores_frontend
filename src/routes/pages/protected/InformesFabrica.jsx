@@ -182,18 +182,19 @@ export const InformesFabrica = () => {
         </div>
       </div>
 
-      <div className="bg-white px-10 py-5">
+      <div className="bg-white px-10 py-5 overflow-x-auto scroll-bar">
         <table className="table">
           <thead>
             <tr className="font-extrabold text-sm text-black">
               {/* <th>Referencia del contrato</th> */}
               <th>Cliente</th>
               <th>Numero contrato</th>
-              <th>Vencimiento</th>
-              <th>Contraentrega email</th>
-              <th>Metros cuadrados</th>
+              <th>Tipo</th>
+              <th>Venc.</th>
+              <th>Contraentrega</th>
+              <th>Mtrs</th>
               <th>Observaciones/Revestimiento</th>
-              <th>Nombre del observante</th>
+              <th>Nombre obs</th>
               <th>Entrega</th>
               <th>Mes y año de entrega</th>
               <th>Estado</th>
@@ -207,6 +208,7 @@ export const InformesFabrica = () => {
                   {/* <td>{contrato.id}</td> */}
                   <th>{contrato.cliente}</th>
                   <th>{contrato.numero_contrato}</th>
+                  <th>{contrato.tipo_plan}</th>
                   <td>{contrato.vencimiento}</td>
                   <td>
                     {formatearDinero(Number(contrato.contraentrega_real))}
