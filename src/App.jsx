@@ -14,21 +14,22 @@ import { ContratosSinPlateas } from "./routes/pages/protected/ContratosSinPlatea
 import { ContratosEnInformes } from "./routes/pages/protected/ContratosEnInformes";
 import { Perfil } from "./routes/pages/protected/Perfil";
 import { ProveedoresProvider } from "./context/ProveedoresContext";
-import { Proveedores } from "./routes/pages/protected/Proveedores";
-import { Comprobantes } from "./routes/pages/protected/Comprobantes";
-import { OrdenesCompra } from "./routes/pages/protected/OrdenesCompra";
+import { Proveedores } from "./routes/pages/protected/proveedores/Proveedores";
+import { Comprobantes } from "./routes/pages/protected/proveedores/Comprobantes";
+import { OrdenesCompra } from "./routes/pages/protected/proveedores/OrdenesCompra";
 import { Cajas } from "./routes/pages/protected/Cajas";
 import { CajasSucursales } from "./routes/pages/protected/CajasSucursales";
 import { Cargas } from "./routes/pages/protected/Cargas";
-import RutaProtegida from "./layouts/RutaProtejida";
-import "react-toastify/dist/ReactToastify.css";
-import "react-toastify/dist/ReactToastify.min.css";
 import { CargasProvider } from "./context/CargasContext";
 import { GaritaControl } from "./routes/pages/protected/GaritaControl";
-import { GaritaContext, GaritaProvider } from "./context/GaritaContext";
+import { GaritaProvider } from "./context/GaritaContext";
 import { Informes } from "./routes/pages/protected/Informes";
 import { InformesProvider } from "./context/InformesContext";
 import { InformesFabrica } from "./routes/pages/protected/InformesFabrica";
+import RutaProtegida from "./layouts/RutaProtejida";
+import "react-toastify/dist/ReactToastify.min.css";
+import "react-toastify/dist/ReactToastify.css";
+import { Productos } from "./routes/pages/protected/proveedores/Productos";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -111,6 +112,7 @@ function App() {
                   <Route path="/proveedores" element={<Proveedores />} />
                   <Route path="/comprobantes" element={<Comprobantes />} />
                   <Route path="/ordenes" element={<OrdenesCompra />} />
+                  <Route path="/productos" element={<Productos />} />
                 </>
               )}
               {user?.sector === "caja" && (

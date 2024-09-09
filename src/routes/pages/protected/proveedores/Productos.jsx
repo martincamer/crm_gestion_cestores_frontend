@@ -2,15 +2,15 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { FaChevronDown, FaList, FaSearch } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { useProveedoresContext } from "../../../context/ProveedoresContext";
-import { formatearFecha } from "../../../helpers/formatearFecha";
+import { useProveedoresContext } from "../../../../context/ProveedoresContext";
+import { formatearFecha } from "../../../../helpers/formatearFecha";
 import { toast } from "react-toastify";
-import { useObtenerId } from "../../../helpers/useObtenerId";
+import { useObtenerId } from "../../../../helpers/useObtenerId";
 import io from "socket.io-client";
-import client from "../../../api/axios";
-import { formatearDinero } from "../../../helpers/formatearDinero";
+import client from "../../../../api/axios";
+import { formatearDinero } from "../../../../helpers/formatearDinero";
 
-export const Proveedores = () => {
+export const Productos = () => {
   const [searchTermCliente, setSearchTermCliente] = useState("");
 
   const { proveedores } = useProveedoresContext();
@@ -33,7 +33,7 @@ export const Proveedores = () => {
   return (
     <section className="h-full max-h-full w-full max-w-full min-w-full">
       <div className="bg-gray-100 py-10 px-10 flex justify-between items-center">
-        <p className="font-bold text-xl">Cargar nuevos proveedores.</p>
+        <p className="font-bold text-xl">Sector de productos compras.</p>
         <div className="flex gap-2">
           <button
             onClick={() =>
@@ -41,7 +41,7 @@ export const Proveedores = () => {
             }
             className="flex gap-2 items-center font-semibold text-sm bg-blue-600 text-white py-2 rounded-md px-2 hover:bg-blue-700 transition-all"
           >
-            Cargar nuevo proveedor
+            Cargar nuevo producto para compras
             <FaChevronDown />
           </button>
         </div>
@@ -218,15 +218,14 @@ const ModalCargarProveedor = () => {
             ✕
           </button>
         </form>
-        <h3 className="font-bold text-xl">Cargar nuevo proveedor</h3>
+        <h3 className="font-bold text-xl">Cargar nuevo producto de compra</h3>
         <p className="py-1 text-sm font-medium">
-          En esta sección podras cargar un nuevo proveedor para crear ordenes,
-          etc.
+          En esta sección podras cargar nuevo producto de compra.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-3">
           <div className="font-bold mb-2 text-[#FD454D] text-lg">
-            Datos del proveedor.
+            Datos del producto.
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-2">
@@ -235,38 +234,6 @@ const ModalCargarProveedor = () => {
                 {...register("proveedor")}
                 className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600"
                 placeholder="Escribir el nombre y apellido..."
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-bold text-sm">Localidad</label>
-              <input
-                {...register("localidad_proveedor")}
-                className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600"
-                placeholder="Escribir la localidad..."
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-bold text-sm">Provincia</label>
-              <input
-                {...register("provincia_proveedor")}
-                className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600"
-                placeholder="Escribir la provincia..."
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-bold text-sm">Telefono</label>
-              <input
-                {...register("telefono")}
-                className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600"
-                placeholder="Escribir el telefono..."
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-bold text-sm">Email</label>
-              <input
-                {...register("email")}
-                className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600"
-                placeholder="Escribir el email..."
               />
             </div>
 
@@ -312,7 +279,7 @@ const ModalCargarProveedor = () => {
               type="submit"
               className="font-semibold text-sm bg-gray-700 py-1 px-4 rounded-md text-white"
             >
-              Guardar proveedor
+              Cargar el producto
             </button>
           </div>
         </form>

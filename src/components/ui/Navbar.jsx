@@ -83,6 +83,20 @@ export const Navbar = () => {
                 <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
                   <Link to={"/comprobantes"}>Comprobantes</Link>
                 </li>{" "}
+              </ul>
+            </div>
+            <div className="dropdown dropdown-hover">
+              <button
+                tabIndex={0}
+                role="button"
+                className="text-white font-semibold hover:bg-gray-600 py-2 px-2 text-sm rounded-md transition-all"
+              >
+                Sector compras
+              </button>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-md z-[1] w-56 p-1 gap-1 shadow-md"
+              >
                 <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
                   <Link to={"/ordenes"}>Ordenes de compra</Link>
                 </li>

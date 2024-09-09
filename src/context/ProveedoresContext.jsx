@@ -17,6 +17,7 @@ export const useProveedoresContext = () => {
 // ProveedoresProvider component
 export const ProveedoresProvider = ({ children }) => {
   const [proveedores, setProveedores] = useState([]);
+  const [productos, setProductos] = useState([]);
   const [proveedor, setProveedor] = useState([]);
 
   useEffect(() => {
@@ -32,9 +33,29 @@ export const ProveedoresProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const respuesta = await client.get("/productos");
+        setProductos(respuesta.data);
+      } catch (error) {
+        console.error("Error fetching proveedores data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <ProveedoresContext.Provider
-      value={{ proveedores, setProveedores, proveedor, setProveedor }}
+      value={{
+        proveedores,
+        setProveedores,
+        proveedor,
+        setProveedor,
+        productos,
+        setProductos,
+      }}
     >
       {children}
     </ProveedoresContext.Provider>

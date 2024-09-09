@@ -2,15 +2,15 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { FaChevronDown, FaList, FaSearch } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { useProveedoresContext } from "../../../context/ProveedoresContext";
-import { formatearFecha } from "../../../helpers/formatearFecha";
-import { useObtenerId } from "../../../helpers/useObtenerId";
-import { formatearDinero } from "../../../helpers/formatearDinero";
+import { useProveedoresContext } from "../../../../context/ProveedoresContext";
+import { formatearFecha } from "../../../../helpers/formatearFecha";
+import { useObtenerId } from "../../../../helpers/useObtenerId";
+import { formatearDinero } from "../../../../helpers/formatearDinero";
 import { toast } from "react-toastify";
-import { tiposDePagos } from "../../../helpers/tiposDePago";
-import FileDrop from "../../../components/FileDrop";
+import { tiposDePagos } from "../../../../helpers/tiposDePago";
+import FileDrop from "../../../../components/FileDrop";
 import io from "socket.io-client";
-import client from "../../../api/axios";
+import client from "../../../../api/axios";
 import axios from "axios";
 
 export const OrdenesCompra = () => {
