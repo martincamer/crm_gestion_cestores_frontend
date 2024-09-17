@@ -50,7 +50,8 @@ export const Cargas = () => {
         .includes(searchTermCliente.toLowerCase()) ||
       carga.numero_remito
         .toLowerCase()
-        .includes(searchTermCliente.toLowerCase());
+        .includes(searchTermCliente.toLowerCase()) ||
+      carga.destino.toLowerCase().includes(searchTermCliente.toLowerCase());
 
     return matchesSearchTerm && yearMatches && monthMatches;
   });
@@ -78,7 +79,7 @@ export const Cargas = () => {
               value={searchTermCliente}
               onChange={(e) => setSearchTermCliente(e.target.value)}
               className="text-sm outline-none w-full px-2"
-              placeholder="Buscar por el nombre, apellido o n° remito"
+              placeholder="Buscar por el remito, persona, destino.."
             />
           </div>
           <div className="flex gap-4">
@@ -118,6 +119,7 @@ export const Cargas = () => {
             <tr className="font-extrabold text-sm text-black">
               <th>Referencia</th>
               <th>Nombre y apellido</th>
+              <th>Destino</th>
               <th>Numero remito</th>
               <th>Fecha de carga</th>
             </tr>
@@ -129,6 +131,7 @@ export const Cargas = () => {
                 <tr key={carga.id}>
                   <th>{carga.id}</th>
                   <th>{carga.nombre_apellido}</th>
+                  <th>{carga.destino}</th>
                   <th>{carga.numero_remito}</th>
                   <th>{formatearFecha(carga.created_at)}</th>
                   <th>
@@ -250,6 +253,14 @@ const ModalNuevoRegistro = () => {
                 {...register("numero_remito")}
                 className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600 w-auto"
                 placeholder="Escribrir el numero ej: 000-00010"
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-auto">
+              <label className="font-bold text-sm">Destino</label>
+              <input
+                {...register("destino")}
+                className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600 w-auto"
+                placeholder="Escribrir el desitino Ej: Burzcaco"
               />
             </div>
           </div>
