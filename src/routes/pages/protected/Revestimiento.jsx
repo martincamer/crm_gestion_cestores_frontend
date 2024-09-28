@@ -6,113 +6,32 @@ import { formatearFecha } from "../../../helpers/formatearFecha";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import client from "../../../api/axios";
+import { formatearDinero } from "../../../helpers/formatearDinero";
+import { MdDelete } from "react-icons/md";
+import { IoMdAdd } from "react-icons/io";
 
-export const Cargas = () => {
+export const Revestimiento = () => {
   const { cargas } = useCargasContext();
   const { handleObtenerId, idObtenida } = useObtenerId();
-
-  const [searchTermCliente, setSearchTermCliente] = useState("");
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
-
-  // Extract unique years and months from cargas
-  const years = [
-    ...new Set(cargas.map((carga) => new Date(carga.created_at).getFullYear())),
-  ].sort((a, b) => b - a);
-  const months = [
-    ...new Set(
-      cargas.map((carga) => new Date(carga.created_at).getMonth() + 1)
-    ),
-  ].sort((a, b) => a - b);
-
-  // Handle year change
-  const handleYearChange = (e) => {
-    setSelectedYear(e.target.value);
-  };
-
-  // Handle month change
-  const handleMonthChange = (e) => {
-    setSelectedMonth(e.target.value);
-  };
-
-  // Filter data based on search term, year, and month
-  let filteredData = cargas.filter((carga) => {
-    const createdDate = new Date(carga.created_at);
-    const yearMatches = selectedYear
-      ? createdDate.getFullYear() === parseInt(selectedYear)
-      : true;
-    const monthMatches = selectedMonth
-      ? createdDate.getMonth() + 1 === parseInt(selectedMonth)
-      : true;
-    const matchesSearchTerm =
-      carga.nombre_apellido
-        .toLowerCase()
-        .includes(searchTermCliente.toLowerCase()) ||
-      carga.numero_remito
-        .toLowerCase()
-        .includes(searchTermCliente.toLowerCase()) ||
-      carga.destino.toLowerCase().includes(searchTermCliente.toLowerCase());
-
-    return matchesSearchTerm && yearMatches && monthMatches;
-  });
 
   return (
     <section className="h-full max-h-full w-full max-w-full min-w-full">
       <div className="bg-gray-100 py-10 px-10 flex justify-between items-center">
-        <p className="font-bold text-xl">Sector de cargas, registros, etc.</p>
+        <p className="font-bold text-xl">Sector de revestimiento</p>
         <div className="flex gap-2">
           <button
             onClick={() =>
-              document.getElementById("my_modal_nueva_carga").showModal()
+              document
+                .getElementById("my_modal_nuevo_contrato_revestimiento")
+                .showModal()
             }
             className="flex gap-2 items-center font-semibold text-sm bg-[#FD454D] hover:bg-[#ef4242] text-white py-2 rounded-md px-2 transition-all"
           >
-            Cargar nuevo registro de carga
+            Cargar nuevo contrato a revestimiento
           </button>
         </div>
       </div>
-      <div className="flex justify-between items-center bg-white px-10 pt-10">
-        <div className="flex gap-3 items-center w-full">
-          <div className="border border-gray-300 px-2 py-1 w-1/5 rounded-md text-sm font-medium flex items-center hover:border-blue-600">
-            <FaSearch className="text-gray-400" />
-            <input
-              value={searchTermCliente}
-              onChange={(e) => setSearchTermCliente(e.target.value)}
-              className="text-sm outline-none w-full px-2"
-              placeholder="Buscar por el remito, persona, destino.."
-            />
-          </div>
-          <div className="flex gap-4">
-            <select
-              value={selectedYear}
-              onChange={handleYearChange}
-              className="border border-gray-300 px-2 py-1 rounded-md text-sm font-medium outline-none hover:border-blue-600"
-            >
-              <option value="">Seleccionar año</option>
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-            <select
-              value={selectedMonth}
-              onChange={handleMonthChange}
-              className="border border-gray-300 px-2 py-1 rounded-md text-sm font-medium outline-none hover:border-blue-600"
-            >
-              <option value="">Seleccionar mes</option>
-              {months.map((month) => (
-                <option key={month} value={month}>
-                  {month < 10 ? `0${month}` : month} -{" "}
-                  {new Date(0, month - 1).toLocaleString("es-ES", {
-                    month: "long",
-                  })}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
+      <div className="flex justify-between items-center bg-white px-10 pt-10"></div>
       <div className="bg-white px-10 py-5">
         <table className="table">
           <thead>
@@ -124,85 +43,76 @@ export const Cargas = () => {
               <th>Fecha de carga</th>
             </tr>
           </thead>
-          <tbody className="text-xs font-medium capitalize">
-            {filteredData
-              ?.sort((a, b) => b.id - a.id)
-              ?.map((carga) => (
-                <tr key={carga.id}>
-                  <th>{carga.id}</th>
-                  <th>{carga.nombre_apellido}</th>
-                  <th>{carga.destino}</th>
-                  <th>{carga.numero_remito}</th>
-                  <th>{formatearFecha(carga.created_at)}</th>
-                  <th>
-                    <div className="flex cursor-pointer gap-2">
-                      <button
-                        onClick={() => {
-                          handleObtenerId(carga.id);
-                          document
-                            .getElementById("my_modal_ver_registro")
-                            .showModal();
-                        }}
-                        type="button"
-                        className="bg-blue-500 py-2 px-4 rounded-md text-white"
-                      >
-                        Registro completo
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleObtenerId(carga.id);
-                          document
-                            .getElementById("my_modal_eliminar")
-                            .showModal();
-                        }}
-                        type="button"
-                        className="bg-red-500 py-2 px-4 rounded-md text-white"
-                      >
-                        Eliminar
-                      </button>{" "}
-                      <button
-                        type="button"
-                        className="bg-green-500 py-2 px-4 rounded-md text-white"
-                      >
-                        Editar
-                      </button>
-                    </div>
-                  </th>
-                </tr>
-              ))}
-          </tbody>
+          <tbody className="text-xs font-medium capitalize"></tbody>
         </table>
       </div>
       <ModalNuevoRegistro />
-      <ModalObservarRegistro idObtenida={idObtenida} />
       <ModalEliminar idObtenida={idObtenida} />
     </section>
   );
 };
 
 const ModalNuevoRegistro = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, watch } = useForm();
   const [items, setItems] = useState([{ detalle: "", cantidad: "" }]);
   const { setCargas } = useCargasContext();
+  const [revestida, setRevestida] = useState("En espera"); // Estado inicial "En espera"
+  const [canje, setCanje] = useState("En espera"); // Estado inicial "En espera"
+  const [mano_de_obra, setManoDeObra] = useState("En espera"); // Estado inicial "En espera"
+  const [ladrillos, setLadrillos] = useState("En espera"); // Estado inicial "En espera"
+
+  const monto_total = watch("monto_total");
 
   const onSubmit = async (formData) => {
     try {
       const ordenData = {
         ...formData,
-        datos: items, // Añadir los items al objeto que envías
+        datos: items,
+        revestida: revestida, // Enviar el estado actual
+        canje: canje, // Enviar el estado actual
+        mano_de_obra: mano_de_obra, // Enviar el estado actual
+        ladrillos: ladrillos, // Enviar el estado actual
       };
 
       const res = await client.post("/cargas", ordenData);
 
       setCargas(res.data.todasLasCargas);
-
       reset();
-
       document.getElementById("my_modal_nueva_carga").close();
       setItems([{ detalle: "", cantidad: "" }]); // Reiniciar el formulario y los items
+      setRevestida("En espera"); // Reiniciar revestida
+      setCanje("En espera"); // Reiniciar canje
+      setManoDeObra("En espera");
+      setLadrillos("En espera");
     } catch (error) {
       console.error("Error creating product:", error);
     }
+  };
+
+  const toggleRevestida = () => {
+    // Cambiar entre "Sí", "No", "En espera"
+    setRevestida((prev) =>
+      prev === "En espera" ? "Sí" : prev === "Sí" ? "No" : "En espera"
+    );
+  };
+
+  const toggleCanje = () => {
+    // Cambiar entre "Sí", "No", "En espera"
+    setCanje((prev) =>
+      prev === "En espera" ? "Sí" : prev === "Sí" ? "No" : "En espera"
+    );
+  };
+
+  const toggleManoDeObra = () => {
+    // Cambiar entre "Sí", "No", "En espera"
+    setManoDeObra((prev) =>
+      prev === "En espera" ? "Sí" : prev === "Sí" ? "No" : "En espera"
+    );
+  };
+
+  const toggleLadrillos = () => {
+    // Cambiar entre "Sí" y "No"
+    setLadrillos((prev) => (prev === "Sí" ? "No" : "Sí"));
   };
 
   const handleAddItem = () => {
@@ -220,58 +130,170 @@ const ModalNuevoRegistro = () => {
     setItems(updatedItems);
   };
 
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = () => {
+    setIsEditable(true);
+  };
+
   return (
-    <dialog id="my_modal_nueva_carga" className="modal">
-      <div className="modal-box rounded-md max-w-7xl">
+    <dialog id="my_modal_nuevo_contrato_revestimiento" className="modal">
+      <div className="modal-box rounded-md max-w-full">
         <form method="dialog">
-          {/* Si hay un botón en el formulario, cerrará el modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             ✕
           </button>
         </form>
-        <h3 className="font-bold text-xl">Cargar nuevo registro</h3>
+        <h3 className="font-bold text-xl">
+          Cargar nuevo contrato a revestimiento
+        </h3>
         <p className="py-1 text-sm font-medium">
-          En esta sección podras cargar un nuevo registro, de productos, etc.
+          En esta sección podras cargar un nuevo contrato a revestimiento.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-3">
           <div className="font-bold mb-2 text-[#FD454D] text-lg">
-            Datos del registro.
+            Datos del contrato.
           </div>
           <div className="grid grid-cols-4 gap-2">
             <div className="flex flex-col gap-2 w-auto">
               <label className="font-bold text-sm">Nombre y apellido</label>
               <input
                 {...register("nombre_apellido")}
-                className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600 w-auto"
+                className="border-b border-gray-300 px-2 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 outline-none  w-auto font-normal "
                 placeholder="Escribir el nombre y apellido..."
               />
             </div>
             <div className="flex flex-col gap-2 w-auto">
-              <label className="font-bold text-sm">Numero del remito</label>
+              <label className="font-bold text-sm">Numero del contrato</label>
               <input
-                {...register("numero_remito")}
-                className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600 w-auto"
-                placeholder="Escribrir el numero ej: 000-00010"
+                {...register("numero_contrato")}
+                className="border-b border-gray-300 px-2 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 outline-none  w-auto font-normal "
+                placeholder="Escribrir el numero ej: 333-444..."
               />
             </div>
             <div className="flex flex-col gap-2 w-auto">
-              <label className="font-bold text-sm">Destino</label>
+              <label className="font-bold text-sm">Localidad</label>
               <input
-                {...register("destino")}
-                className="border px-2 py-1.5 text-sm text-gray-700 rounded-md outline-none focus:border-blue-600 w-auto"
-                placeholder="Escribrir el desitino Ej: Burzcaco"
+                {...register("localidad")}
+                className="border-b border-gray-300 px-2 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 outline-none  w-auto font-normal "
+                placeholder="Escribrir la localidad..."
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-auto">
+              <label className="font-bold text-sm">Provincia</label>
+              <input
+                {...register("provincia")}
+                className="border-b border-gray-300 px-2 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 outline-none  w-auto font-normal "
+                placeholder="Escribrir la provincia..."
               />
             </div>
           </div>
+
           <div className="mt-5">
             <div className="font-bold mb-2 text-[#FD454D] text-lg">
-              Cargar nuevos items del registro.
+              Administración datos.
             </div>
 
-            <div className="border">
+            <div className="grid grid-cols-11 gap-4">
+              {/* Revestida */}
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">Revestida</label>
+                <button
+                  type="button"
+                  className={`py-2 px-4 text-white text-sm rounded-md ${
+                    revestida === "Sí"
+                      ? "bg-green-500"
+                      : revestida === "No"
+                      ? "bg-red-500"
+                      : "bg-orange-500"
+                  }`}
+                  onClick={toggleRevestida}
+                >
+                  {revestida}
+                </button>
+              </div>
+              {/* Canje */}
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">Canje</label>
+                <button
+                  type="button"
+                  className={`py-2 px-4 text-white text-sm rounded-md ${
+                    canje === "Sí"
+                      ? "bg-green-500"
+                      : canje === "No"
+                      ? "bg-red-500"
+                      : "bg-orange-500"
+                  }`}
+                  onClick={toggleCanje}
+                >
+                  {canje}
+                </button>
+              </div>{" "}
+              {/* <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">Ladrillos</label>
+                <button
+                  type="button"
+                  className={`py-2 px-4 text-white text-sm rounded-md ${
+                    ladrillos === "Sí" ? "bg-green-500" : "bg-red-500"
+                  }`}
+                  onClick={toggleLadrillos}
+                >
+                  {ladrillos}
+                </button>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">Mano de obra</label>
+                <button
+                  type="button"
+                  className={`py-2 px-4 text-white text-sm rounded-md ${
+                    mano_de_obra === "Sí"
+                      ? "bg-green-500"
+                      : mano_de_obra === "No"
+                      ? "bg-red-500"
+                      : "bg-orange-500"
+                  }`}
+                  onClick={toggleManoDeObra}
+                >
+                  {mano_de_obra}
+                </button>
+              </div> */}
+            </div>
+            {canje === "Sí" && (
+              <div className="flex flex-col gap-2 w-auto mt-4 items-start">
+                <label className="font-bold text-sm">
+                  Seleccionar el canje
+                </label>
+                <select
+                  {...register("tipo_de_canje")}
+                  className="border-b border-gray-300 px-2 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 outline-none  w-auto font-semibold"
+                  placeholder="Escribir el nombre y apellido..."
+                >
+                  <option className="font-bold text-blue-500" value="">
+                    Seleccionar el tipo de canje
+                  </option>
+                  <option value="contra entrega" className="font-semibold">
+                    Contra entrega
+                  </option>{" "}
+                  <option value="cuotas" className="font-semibold">
+                    Cuotas
+                  </option>{" "}
+                  <option value="cuotas" className="font-semibold">
+                    Anexo
+                  </option>{" "}
+                </select>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-5">
+            <div className="font-bold mb-2 text-[#FD454D] text-lg">
+              Cargar materiales de revestimiento.
+            </div>
+
+            <div className="">
               {items.map((item, index) => (
-                <div key={index} className="grid grid-cols-3 gap-2">
+                <div key={index} className="grid grid-cols-5 gap-2">
                   <div className="flex flex-col gap-2 w-auto p-3 border-r">
                     <input
                       value={item.detalle}
@@ -279,19 +301,60 @@ const ModalNuevoRegistro = () => {
                         handleItemChange(index, "detalle", e.target.value)
                       }
                       className="border-b px-2 py-1.5 text-sm text-gray-700 outline-none  w-auto uppercase"
-                      placeholder="Escribir el detalle del producto..."
+                      placeholder="Descripción..."
                     />
                   </div>
-                  <div className="flex flex-col gap-2 w-auto p-3">
-                    {/* <label className="font-bold text-sm">Cantidad</label> */}
+                  <div className="flex flex-col gap-2 w-auto p-3 border-r">
                     <input
                       value={item.cantidad}
                       onChange={(e) =>
                         handleItemChange(index, "cantidad", e.target.value)
                       }
-                      className="border-b px-2 py-1.5 text-sm text-gray-700 outline-none  w-auto uppercase font-bold"
+                      className="border-b px-2 py-1.5 text-sm text-gray-700 outline-none  w-auto uppercase"
                       placeholder="Escribir la cantidad..."
                     />
+                  </div>
+
+                  <div
+                    className="flex flex-col gap-2 w-auto p-3 border-r"
+                    onClick={handleInputClick}
+                  >
+                    {isEditable ? (
+                      <input
+                        value={item.precio}
+                        onChange={(e) =>
+                          handleItemChange(index, "precio", e.target.value)
+                        }
+                        type="text"
+                        onBlur={() => setIsEditable(false)}
+                        className="border-b px-2 py-1.5 text-sm text-gray-700 outline-none  w-auto uppercase"
+                        placeholder="Escribir el total del comprobante..."
+                      />
+                    ) : (
+                      <p className="border-b px-2 py-1.5 text-sm text-gray-700 outline-none  w-auto uppercase">
+                        {formatearDinero(Number(item.precio) || 0)}
+                      </p>
+                    )}
+                  </div>
+                  {/* <div className="flex flex-col gap-2 w-auto p-3 border-r">
+                    <input
+                      value={item.precio}
+                      onChange={(e) =>
+                        handleItemChange(index, "precio", e.target.value)
+                      }
+                      className="border-b px-2 py-1.5 text-sm text-gray-700 outline-none  w-auto uppercase"
+                      placeholder="Escribir el precio..."
+                    />
+                  </div>{" "} */}
+                  <div className="flex flex-col gap-2 w-auto p-3 border-r">
+                    <p
+                      className="border-b px-2 py-1.5 text-sm text-gray-700 outline-none  w-auto uppercase"
+                      placeholder="Escribir el precio..."
+                    >
+                      {formatearDinero(
+                        Number(item.precio * item.cantidad || 0)
+                      )}
+                    </p>
                   </div>
                   <div className="flex items-center">
                     <button
@@ -299,7 +362,7 @@ const ModalNuevoRegistro = () => {
                       onClick={() => handleRemoveItem(index)}
                       className="text-red-500 border px-4 rounded-md border-red-500 text-sm py-1 hover:bg-red-50 transition-all font-semibold"
                     >
-                      Eliminar
+                      <MdDelete className="text-xl" />
                     </button>
                   </div>
                 </div>
@@ -308,13 +371,37 @@ const ModalNuevoRegistro = () => {
             <button
               type="button"
               onClick={handleAddItem}
-              className="mt-3 font-semibold text-sm text-blue-500"
+              className="mt-1 font-semibold text-sm text-blue-500 flex gap-1 items-center hover:border hover:border-blue-500 hover:rounded-full border border-transparent transition-all px-3 py-1"
             >
-              Añadir nuevo item
+              <span>Añadir</span>{" "}
+              <IoMdAdd className=" transition-all text-xl" />
             </button>
           </div>
+
+          <div className="mt-5">
+            <div className="font-bold mb-2 text-[#FD454D] text-lg">
+              Administración contable.
+            </div>
+
+            <div className="grid grid-cols-5">
+              <div className="flex flex-col gap-2 w-auto">
+                <label className="font-bold text-sm">Dinero</label>
+                <input
+                  {...register("monto_total")}
+                  className="border-b border-gray-300 px-2 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 outline-none  w-auto font-normal "
+                  placeholder="Escribir el nombre y apellido..."
+                />
+                <div className="flex">
+                  <p className="font-bold bg-blue-500 text-white py-1 px-4 rounded-md">
+                    {formatearDinero(Number(monto_total))}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-6">
-            <button className="font-semibold text-sm bg-gray-700 py-1 px-4 rounded-md text-white">
+            <button className="font-semibold text-sm bg-[#FD454D] py-1 px-4 rounded-md text-white">
               Guardar registro
             </button>
           </div>
@@ -418,9 +505,6 @@ const ModalEditarRegistro = ({ idObtenida }) => {
               {items.map((item, index) => (
                 <div key={index} className="grid grid-cols-3 gap-2">
                   <div className="flex flex-col gap-2 w-auto p-3 border-r">
-                    {/* <label className="font-bold text-sm">
-                      Detalle del producto
-                    </label> */}
                     <input
                       value={item.detalle}
                       onChange={(e) =>

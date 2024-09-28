@@ -30,6 +30,7 @@ import RutaProtegida from "./layouts/RutaProtejida";
 import "react-toastify/dist/ReactToastify.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Productos } from "./routes/pages/protected/proveedores/Productos";
+import { Revestimiento } from "./routes/pages/protected/Revestimiento";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -104,6 +105,14 @@ function App() {
                   <Route
                     path="/contratos-en-informes"
                     element={<ContratosEnInformes />}
+                  />
+                </>
+              )}
+              {user?.sector === "revestimiento" && (
+                <>
+                  <Route
+                    path="/area-revestimiento"
+                    element={<Revestimiento />}
                   />
                 </>
               )}

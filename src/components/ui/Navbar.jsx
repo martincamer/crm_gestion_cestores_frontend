@@ -14,7 +14,7 @@ export const Navbar = () => {
           className="font-bold text-white flex gap-2 items-center mr-6 px-4"
         >
           <img src="https://app.holded.com/assets/img/brand/holded-logo.svg" />{" "}
-          Prisma crm.
+          Crm Sectores
         </Link>
         {user.sector === "garantias" && (
           <>
@@ -130,6 +130,31 @@ export const Navbar = () => {
                 </li>{" "}
                 <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
                   <Link to={"/cajas"}>Subir nuevas cajas</Link>
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
+
+        {user.sector === "revestimiento" && (
+          <>
+            <div className="dropdown dropdown-hover">
+              <button
+                tabIndex={0}
+                role="button"
+                className="text-white font-semibold hover:bg-gray-600 py-2 px-2 text-sm rounded-md transition-all"
+              >
+                Sector de revestimiento
+              </button>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-md z-[1] w-56 p-1 gap-1 shadow-md"
+              >
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/area-revestimiento"}>Cargar nuevo contratos</Link>
+                </li>{" "}
+                <li className="hover:bg-gray-600 rounded-md hover:text-white text-black font-medium">
+                  <Link to={"/cajas"}>Presupuestos cargados</Link>
                 </li>
               </ul>
             </div>

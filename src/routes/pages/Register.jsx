@@ -106,6 +106,7 @@ export const Register = () => {
             <option value={"carga"}>Carga</option>
             <option value={"control-garita"}>Control Garita</option>
             <option value={"informes"}>Informes</option>
+            <option value={"revestimiento"}>Revestimiento</option>
           </select>
         </div>
 

@@ -46,7 +46,6 @@ export const Home = () => {
   } else {
     saludo = "¡Buenas noches";
   }
-  //FIN GARANTIAS
 
   // State to store selected filters
   const [selectedFactory, setSelectedFactory] = useState("");

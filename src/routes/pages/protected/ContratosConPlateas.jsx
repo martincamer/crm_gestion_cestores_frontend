@@ -5,13 +5,12 @@ import { useEffect, useState } from "react";
 import { useContratosContext } from "../../../context/ContratosContext";
 import { formatearFecha } from "../../../helpers/formatearFecha";
 import { toast } from "react-toastify";
+import { useObtenerId } from "../../../helpers/useObtenerId";
 import io from "socket.io-client";
 import client from "../../../api/axios";
-import { useObtenerId } from "../../../helpers/useObtenerId";
 
 export const ContratosConPlateas = () => {
   const { contratos, sucursales } = useContratosContext();
-
   const { idObtenida, handleObtenerId } = useObtenerId();
 
   // Función para obtener la fecha actual formateada como YYYY-MM-DD
@@ -115,30 +114,6 @@ export const ContratosConPlateas = () => {
                 Todo financiado
               </option>
             </select>
-            {/* <select
-              value={selectedEstado}
-              onChange={handleEstadoChange}
-              className="border border-gray-300 rounded-md py-2 px-2 w-auto text-sm font-semibold focus:border-blue-600 cursor-pointer outline-none"
-            >
-              <option value="" className="font-bold text-blue-600">
-                Todos los estados
-              </option>
-              <option value={"en sección sin platea"} className="font-semibold">
-                Sin plateas
-              </option>
-              <option
-                value={"enviado a informes, completo"}
-                className="font-semibold"
-              >
-                En informes, finalizados
-              </option>
-              <option value={"en sección con platea"} className="font-semibold">
-                Con plateas
-              </option>
-              <option value={"por garantizar"} className="font-semibold">
-                Por garantizar
-              </option>
-            </select> */}
           </div>
 
           <div className="flex gap-5 items-center">
