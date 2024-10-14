@@ -161,6 +161,12 @@ export const Cargas = () => {
                         Eliminar
                       </button>{" "}
                       <button
+                        onClick={() => {
+                          handleObtenerId(carga.id);
+                          document
+                            .getElementById("my_modal_editar_carga")
+                            .showModal();
+                        }}
                         type="button"
                         className="bg-green-500 py-2 px-4 rounded-md text-white"
                       >
@@ -176,6 +182,7 @@ export const Cargas = () => {
       <ModalNuevoRegistro />
       <ModalObservarRegistro idObtenida={idObtenida} />
       <ModalEliminar idObtenida={idObtenida} />
+      <ModalEditarRegistro idObtenida={idObtenida} />
     </section>
   );
 };
@@ -325,8 +332,22 @@ const ModalNuevoRegistro = () => {
 };
 
 const ModalEditarRegistro = ({ idObtenida }) => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm();
   const [items, setItems] = useState([{ detalle: "", cantidad: "" }]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const res = await client.get(`/cargas/${idObtenida}`);
+      console.log(res.data);
+      console.log(idObtenida);
+      setValue("nombre_apellido", res.data.nombre_apellido);
+      setValue("numero_remito", res.data.numero_remito);
+      setValue("destino", res.data.destino);
+      setItems(JSON.parse(res.data.datos));
+    };
+
+    loadData();
+  }, [idObtenida]);
 
   const { setCargas } = useCargasContext();
 
@@ -337,14 +358,25 @@ const ModalEditarRegistro = ({ idObtenida }) => {
         datos: items, // Añadir los items al objeto que envías
       };
 
-      const res = await client.put("/cargas", ordenData);
+      const res = await client.put(`/cargas/${idObtenida}`, ordenData);
 
       setCargas(res.data.todasLasCargas);
 
-      reset();
+      document.getElementById("my_modal_editar_carga").close();
 
-      document.getElementById("my_modal_nueva_carga").close();
-      setItems([{ detalle: "", cantidad: "" }]); // Reiniciar el formulario y los items
+      toast.success("¡Carga actualizada correctamente!", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        style: {
+          padding: "12px",
+        },
+      });
     } catch (error) {
       console.error("Error creating product:", error);
     }
@@ -366,7 +398,7 @@ const ModalEditarRegistro = ({ idObtenida }) => {
   };
 
   return (
-    <dialog id="my_modal_nueva_carga" className="modal">
+    <dialog id="my_modal_editar_carga" className="modal">
       <div className="modal-box rounded-md max-w-7xl">
         <form method="dialog">
           {/* Si hay un botón en el formulario, cerrará el modal */}
@@ -463,7 +495,7 @@ const ModalEditarRegistro = ({ idObtenida }) => {
           </div>
           <div className="mt-6">
             <button className="font-semibold text-sm bg-gray-700 py-1 px-4 rounded-md text-white">
-              Guardar registro
+              Actualizar el registro
             </button>
           </div>
         </form>

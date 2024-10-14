@@ -26,11 +26,12 @@ import { GaritaProvider } from "./context/GaritaContext";
 import { Informes } from "./routes/pages/protected/Informes";
 import { InformesProvider } from "./context/InformesContext";
 import { InformesFabrica } from "./routes/pages/protected/InformesFabrica";
+import { Productos } from "./routes/pages/protected/proveedores/Productos";
+import { Revestimiento } from "./routes/pages/protected/Revestimiento";
+import { RevestimientoProvider } from "./context/RevestimientoContext";
 import RutaProtegida from "./layouts/RutaProtejida";
 import "react-toastify/dist/ReactToastify.min.css";
 import "react-toastify/dist/ReactToastify.css";
-import { Productos } from "./routes/pages/protected/proveedores/Productos";
-import { Revestimiento } from "./routes/pages/protected/Revestimiento";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -72,10 +73,12 @@ function App() {
                     <CargasProvider>
                       <GaritaProvider>
                         <InformesProvider>
-                          <Navbar />
-                          <main className="min-h-full max-h-full h-full flex">
-                            <Outlet />
-                          </main>
+                          <RevestimientoProvider>
+                            <Navbar />
+                            <main className="min-h-full max-h-full h-full flex">
+                              <Outlet />
+                            </main>
+                          </RevestimientoProvider>
                         </InformesProvider>
                       </GaritaProvider>
                     </CargasProvider>
